@@ -1,9 +1,12 @@
-version: "2"
+
+# cassandra Database cluster Monitoring docker-compose.yml using Prometheus and Grafana
 services:
   prometheus:
     image: "prom/prometheus"
     ports:
       - "9090:9090"
+    networks:
+      - cassandra-network-dtc
     volumes:
       - "prometheus:/prometheus"
       - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
@@ -20,6 +23,13 @@ services:
       - "./grafana/prometheus-datasource.yaml:/etc/grafana/provisioning/datasources/prometheus-datasource.yaml"
       - "./grafana/dashboards.yaml:/etc/grafana/provisioning/dashboards/dashboards.yaml"
       - "./grafana/dashboards:/var/lib/grafana/dashboards"
+    networks:
+      - cassandra-network-dtc
+
+networks:
+  cassandra-network-dtc:
+    # external: true
+    
 volumes:
   grafana:
   prometheus:  
